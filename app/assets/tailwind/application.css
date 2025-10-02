@@ -60,6 +60,10 @@
   #error_explanation {
     @apply px-3 py-2 mt-3 font-medium text-red-500 rounded-lg bg-red-50;
   }
+
+  .input {
+    @apply rounded-sm border border-zinc-300 bg-white px-3 py-2 text-sm
+  }
 }
 
 @keyframes zoomIn {

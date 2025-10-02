@@ -16,9 +16,18 @@ class WorksController < ApplicationController
     end
   end
 
+  def upload_ly
+    lily_file = params[:file]
+    
+    Lilypond::Uploader.new(lily_file).save
+
+    render json: {
+      output_file: lily_file.original_filename
+    }
+  end
+
   def convert
-    @work = Work.new(lily_file: params[:lily_file])
-    @work.process_lilypond_file
+    file_name = params[:lily_file]
     head :accepted
   end
 

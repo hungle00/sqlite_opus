@@ -69,7 +69,6 @@ export default class extends Controller {
 
 class DirectUploadController {
   constructor(source, file) {
-    this.directUpload = createDirectUpload(file, source.url, this);
     this.source = source;
     this.file = file;
   }
@@ -77,15 +76,8 @@ class DirectUploadController {
   start() {
     this.file.controller = this;
     this.hiddenInput = this.createHiddenInput();
-    this.directUpload.create((error, attributes) => {
-      if (error) {
-        removeElement(this.hiddenInput);
-        this.emitDropzoneError(error);
-      } else {
-        this.hiddenInput.value = attributes.signed_id;
-        this.emitDropzoneSuccess();
-      }
-    });
+    this.source.dropZone.processQueue();
+    this.hiddenInput.value = this.file.name;
   }
 
   createHiddenInput() {
@@ -140,10 +132,6 @@ function createDirectUploadController(source, file) {
   return new DirectUploadController(source, file);
 }
 
-function createDirectUpload(file, url, controller) {
-  return new DirectUpload(file, url, controller);
-}
-
 function createDropZone(controller) {
   return new Dropzone(controller.element, {
     url: controller.url,
@@ -152,6 +140,6 @@ function createDropZone(controller) {
     maxFilesize: controller.maxFileSize,
     acceptedFiles: controller.acceptedFiles,
     addRemoveLinks: controller.addRemoveLinks,
-    autoQueue: false
+    autoProcessQueue: false,
   });
 }

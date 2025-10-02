@@ -2,4 +2,4 @@
 import "@hotwired/turbo-rails"
 import "@rails/activestorage"
 import "controllers"
-import "channels"
+// import "channels"
