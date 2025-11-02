@@ -4,7 +4,7 @@ require 'json'
 
 module SqliteDashboard
   class DatabasesController < ApplicationController
-  	layout "sqlite_dashboard/application"
+    layout "sqlite_dashboard/application"
  
     before_action :set_database, only: [:show, :execute_query, :export_csv, :export_json, :tables, :table_schema]
     before_action :set_saved_query, only: [:destroy_saved_query]
@@ -12,6 +12,8 @@ module SqliteDashboard
     def index
       @databases = SqliteDashboard.configuration.databases
       @saved_queries = SavedQuery.recent.limit(10)
+
+      @work = Work.new
     end
 
     def show

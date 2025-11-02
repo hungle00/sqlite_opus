@@ -52,6 +52,9 @@
               </h1>
             </div>
             <div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fas fa-plus"></i> New Database
+              </button>
               <%= link_to worksheet_path, class: "btn btn-success" do %>
                 <i class="fas fa-file-code"></i> SQL Worksheet
               <% end %>
@@ -59,6 +62,8 @@
           </div>
           <p class="page-subtitle">Select a database to explore and manage</p>
         </div>
+
+        <%= render 'modal' %>
 
         <% if @databases.any? %>
           <div class="databases-grid">
