@@ -52,7 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_040539) do
 
   create_table "works", force: :cascade do |t|
     t.string "title", default: "", null: false
-    t.string "slug", default: "", null: false
+    t.string "db_file_name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

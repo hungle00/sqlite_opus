@@ -26,14 +26,9 @@ class WorksController < ApplicationController
     }
   end
 
-  def convert
-    file_name = params[:lily_file]
-    head :accepted
-  end
-
   private
 
   def work_params
-    params.require(:work).permit(:title, :lily_file)
+    params.require(:work).permit(:title, :db_file_name)
   end
 end

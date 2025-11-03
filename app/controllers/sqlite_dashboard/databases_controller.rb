@@ -10,7 +10,7 @@ module SqliteDashboard
     before_action :set_saved_query, only: [:destroy_saved_query]
 
     def index
-      @databases = SqliteDashboard.configuration.databases
+      @databases = Work.all_databases
       @saved_queries = SavedQuery.recent.limit(10)
 
       @work = Work.new
@@ -21,7 +21,7 @@ module SqliteDashboard
     end
 
     def worksheet
-      @databases = SqliteDashboard.configuration.databases
+      @databases = Work.all_databases
       @saved_queries = SavedQuery.recent.limit(20)
     end
 
@@ -224,7 +224,7 @@ module SqliteDashboard
     end
 
     def set_database
-      @database = SqliteDashboard.configuration.databases.find { |db| db[:id] == params[:id].to_i }
+      @database = Work.all_databases.find { |db| db[:id] == params[:id].to_i }
       redirect_to sqlite_dashboard_databases_path, alert: "Database not found" unless @database
     end
 

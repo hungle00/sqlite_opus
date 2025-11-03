@@ -17,12 +17,12 @@
   </div>
 
   <div class="my-6">
-    <%= form.label :lily_file, class: "form-label" %>
+    <%= form.label :db_file_name, class: "form-label" %>
     <div class="dropzone dropzone-default dz-clickable"
       data-controller="dropzone"
       data-dropzone-max-file-size="2"
       data-dropzone-max-files="1">
-    <%= form.file_field :lily_file, class: "input",
+    <%= form.file_field :db_file_name, class: "input",
       data: { 
         'dropzone-target': 'input', 
         'create-work-target': 'file',
