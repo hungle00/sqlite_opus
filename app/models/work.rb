@@ -10,7 +10,7 @@ class Work < ApplicationRecord
     def work_databases
       Work.all.map do |work|
         {
-          id: work.id + SqliteDashboard.configuration.databases.count, 
+          id: work.id,
           name: work.title, 
           path: work.db_file_path.to_s
         }
@@ -18,7 +18,7 @@ class Work < ApplicationRecord
     end
 
     def all_databases
-      SqliteDashboard.configuration.databases + work_databases
+      Work.count == 0 ? SqliteDashboard.configuration.databases : work_databases
     end
   end
 end

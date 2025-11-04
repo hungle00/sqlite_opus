@@ -8,6 +8,9 @@ gem "rails", "~> 8.0"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
+# Compile SCSS to CSS [https://github.com/rails/dartsass-rails]
+gem "dartsass-rails"
+
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1.0"
 
@@ -65,9 +68,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-
-gem "tailwindcss-ruby", "~> 4.0"
-gem "tailwindcss-rails", "~> 4.2"
 
 gem "solid_queue", "~> 1.1"
 gem "mission_control-jobs", "~> 1.0"

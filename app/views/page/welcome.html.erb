@@ -1,21 +1,75 @@
-<div class="bg-white lg:px-8">
-  <div class="max-w-3xl py-4 sm:py-8 lg:py-12">
-    <h2 class="sm:text-2xl md:text-3xl text-rose-400 font-semibold">
-      Lily Opus
-    </h2>
-    <div class="mt-2">
-      <h4 class="text-lg text-gray-700">
-        <span class="font-semibold">Opus</span> is a Latin term that means Works.
-        <span class="font-semibold">Rails Opus</span>, which stands for a collection of works with Rails.
-      </h4>
-      <ul class="mt-2 ml-4 list-disc text-lg">
-        <li class="py-2">
-          <%= link_to "New works", "/works/new", class: "font-semibold hover:underline" %> 
-        </li>
-        <li class="py-2">
-          <%= link_to "Sqlite Dashboard", "/sqlite_dashboard", class: "font-semibold hover:underline" %> 
-        </li>
-      </ul>
+<!-- Hero Section -->
+<section class="hero-section py-5 py-md-5 py-lg-5">
+  <div class="container">
+    <div class="row justify-content-center align-items-center min-vh-50">
+      <div class="col-lg-8 text-center">
+        <h1 class="display-2 fw-bold text-primary mb-4">
+          SQLite Opus
+        </h1>
+        <p class="lead text-body-secondary mb-4">
+          <span class="fw-semibold">Opus</span> is a Latin term that means Works.
+          <span class="fw-semibold">Rails Opus</span> stands for a collection of works with Rails.
+        </p>
+        <p class="text-body-secondary mb-5">
+          Manage and explore your SQLite databases with an intuitive dashboard interface.
+        </p>
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+          <%= link_to "Open SQLite Dashboard", "/sqlite_dashboard", class: "btn btn-primary btn-lg px-5 py-3 fw-semibold" %>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="var(--primary-color)" class="bi bi-database" viewBox="0 0 16 16">
+                <path d="M8 0c-4.418 0-8 1.79-8 4 0 1.143.854 2.216 2.186 2.953C1.689 7.5 1 8.953 1 10.5c0 2.21 3.582 4 7 4s7-1.79 7-4c0-1.547-.689-3-1.186-3.547C15.146 6.216 16 5.143 16 4c0-2.21-3.582-4-8-4M8 6c-3.314 0-6-.895-6-2s2.686-2 6-2 6 .895 6 2-2.686 2-6 2M1 10.5c0 2.21 3.582 4 7 4s7-1.79 7-4c0-1.547-.689-3-1.186-3.547C13.146 6.216 14 5.143 14 4c0 2.21-3.582 4-7 4s-7-1.79-7-4c0 1.547.689 3 1.186 3.547C1.146 8.216 1 9.143 1 10.5"/>
+              </svg>
+            </div>
+            <h5 class="card-title fw-semibold">Database Management</h5>
+            <p class="card-text text-body-secondary small">
+              Browse and manage multiple SQLite databases with ease.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="var(--primary-color)" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+            </div>
+            <h5 class="card-title fw-semibold">Query Interface</h5>
+            <p class="card-text text-body-secondary small">
+              Execute SQL queries and explore your data with a powerful worksheet.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="var(--primary-color)" class="bi bi-table" viewBox="0 0 16 16">
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V7H1zm0-1h4V4H1a1 1 0 0 0-1 1zm11-1v3h4V4a1 1 0 0 0-1-1h-3zm-1 0H6v3h4z"/>
+              </svg>
+            </div>
+            <h5 class="card-title fw-semibold">Table Explorer</h5>
+            <p class="card-text text-body-secondary small">
+              View table schemas, data, and relationships in a clean interface.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

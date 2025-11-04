@@ -1,0 +1,67 @@
+// CSS Variables
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --sidebar-bg: #1e293b;
+  --sidebar-text: #e2e8f0;
+  --sidebar-hover: #334155;
+  --main-bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --success-bg: #dcfce7;
+  --success-border: #86efac;
+  --success-text: #166534;
+  --error-bg: #fee2e2;
+  --error-border: #fca5a5;
+  --error-text: #991b1b;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+// General Styles
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--main-bg);
+  color: var(--text-primary);
+}
+
+// Navbar
+.navbar-primary {
+  background-color: var(--primary-color) !important;
+}
+
+// Footer
+footer a:hover {
+  color: var(--primary-color) !important;
+  transition: color 0.2s ease-in-out;
+}
+
+// Hero Section
+.hero-section {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+// Buttons
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+// Text
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+// Import SQLite Dashboard styles
+@import "sqlite_dashboard";
+

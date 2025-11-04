@@ -1,7 +1,4 @@
 class WorksController < ApplicationController
-  def show
-    @work = Work.find(params[:id])
-  end
   
   def new
     @work = Work.new
@@ -10,9 +7,9 @@ class WorksController < ApplicationController
   def create
     @work = Work.new(work_params)
     if @work.save
-      redirect_to @work, notice: 'Opus was successfully created.'
+      redirect_to database_path(@work.id), notice: 'Opus was successfully created.'
     else
-      render :new, notice: 'Opus was failed to create.'
+      redirect_to sqlite_dashboard_path, notice: 'Opus was failed to create.'
     end
   end
 

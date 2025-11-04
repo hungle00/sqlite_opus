@@ -10,3 +10,4 @@ pin_all_from "app/javascript/channels", under: "channels"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "dropzone" # @6.0.0
 pin "just-extend" # @5.1.1
+pin "bootstrap", to: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
