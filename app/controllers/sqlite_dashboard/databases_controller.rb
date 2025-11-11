@@ -1,13 +1,15 @@
 require 'sqlite3'
 require 'csv'
 require 'json'
+require Rails.root.join('lib', 'sqlite_metadata')
 
 module SqliteDashboard
   class DatabasesController < ApplicationController
     layout "sqlite_dashboard/application"
  
     before_action :set_database, only: [:show, :execute_query, :export_csv, :export_json, :tables, :table_schema]
-    before_action :set_saved_query, only: [:destroy_saved_query]
+    before_action :set_metadata, only: [:show, :tables, :table_schema]
+    after_action :close_metadata, only: [:show, :tables, :table_schema]
 
     def index
       @databases = Work.all_databases
@@ -17,7 +19,7 @@ module SqliteDashboard
     end
 
     def show
-      @tables = fetch_tables
+      @tables = @metadata.tables
     end
 
     def worksheet
@@ -69,14 +71,12 @@ module SqliteDashboard
     end
 
     def tables
-      tables = fetch_tables
-      render json: tables
+      @tables = @metadata.tables
     end
 
     def table_schema
       table_name = params[:table_name]
-      schema = fetch_table_schema(table_name)
-      render json: schema
+      @schema = @metadata.get_table_schema(table_name)
     end
 
     def export_csv
@@ -177,76 +177,26 @@ module SqliteDashboard
       end
     end
 
-    # Saved Queries actions
-    def saved_queries
-      @saved_queries = SavedQuery.recent
-      database_name = params[:database_name]
-      @saved_queries = @saved_queries.for_database(database_name) if database_name.present?
-
-      render json: @saved_queries
-    end
-
-    def create_saved_query
-      @saved_query = SavedQuery.new(saved_query_params)
-
-      if @saved_query.save
-        render json: @saved_query, status: :created
-      else
-        render json: { error: @saved_query.errors.full_messages.join(", ") }, status: :unprocessable_entity
-      end
-    end
-
-    def show_saved_query
-      @saved_query = SavedQuery.find(params[:id])
-      render json: @saved_query
-    rescue ActiveRecord::RecordNotFound
-      render json: { error: "Saved query not found" }, status: :not_found
-    end
-
-    def destroy_saved_query
-      if @saved_query.destroy
-        render json: { message: "Query deleted successfully" }
-      else
-        render json: { error: "Failed to delete query" }, status: :unprocessable_entity
-      end
-    end
-
     private
-
-    def set_saved_query
-      @saved_query = SavedQuery.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render json: { error: "Saved query not found" }, status: :not_found
-    end
-
-    def saved_query_params
-      params.require(:saved_query).permit(:name, :query, :database_name, :description)
-    end
 
     def set_database
       @database = Work.all_databases.find { |db| db[:id] == params[:id].to_i }
       redirect_to sqlite_dashboard_databases_path, alert: "Database not found" unless @database
     end
 
+    def set_metadata
+      @metadata = SqliteMetadata.new(@database[:path])
+    rescue => e
+      Rails.logger.error "Failed to initialize SqliteMetadata: #{e.message}"
+      redirect_to sqlite_dashboard_databases_path, alert: "Failed to access database: #{e.message}"
+    end
+
+    def close_metadata
+      @metadata&.close
+    end
+
     def database_connection
       @connection ||= SQLite3::Database.new(@database[:path])
-    end
-
-    def fetch_tables
-      database_connection.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").map { |row| row[0] }
-    end
-
-    def fetch_table_schema(table_name)
-      database_connection.execute("PRAGMA table_info(#{table_name})").map do |row|
-        {
-          cid: row[0],
-          name: row[1],
-          type: row[2],
-          notnull: row[3],
-          dflt_value: row[4],
-          pk: row[5]
-        }
-      end
     end
 
     def execute_sql(query)
