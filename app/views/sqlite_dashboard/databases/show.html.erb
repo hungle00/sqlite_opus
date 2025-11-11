@@ -23,6 +23,47 @@
   <!-- Main content area -->
   <div class="col-md-10 main-content" data-controller="query-executor" data-database-name="<%= @database[:name] %>">
     <!-- Query Console -->
+    <div class="content-header">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h1 class="page-title mt-3 mx-4">
+            <i class="fas fa-server"></i>
+            <%= @database[:name] %>
+          </h1>
+        </div>
+      </div>  
+
+      <div class="content-body mx-4">
+      
+        <table class="table table-sm table-striped table-bordered">
+          <tbody>
+            <tr>
+              <td class="fw-semibold">Base Name</td>
+              <td><%= @metadata.filename %></td>
+            </tr>
+            <tr>
+              <td class="fw-semibold">Size on Disk</td>
+              <td><%= @metadata.size_on_disk %></td>
+            </tr>
+
+            <tr>
+              <td class="fw-semibold">Tables</td>
+              <td><%= @metadata.tables.size %></td>
+            </tr>
+
+            <tr>
+              <td class="fw-semibold">Indexes</td>
+              <td><%= @metadata.get_all_indexes.size %></td>
+            </tr>
+
+            <tr>
+              <td class="fw-semibold">Views</td>
+              <td><%= @metadata.get_all_views.size %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div class="query-console">
       <%= form_with url: execute_query_database_path(@database[:id]),
                     method: :post,
