@@ -7,9 +7,8 @@ module SqliteDashboard
   class DatabasesController < ApplicationController
     layout "sqlite_dashboard/application"
  
-    before_action :set_database, only: [:show, :execute_query, :export_csv, :export_json, :tables, :table_schema]
-    before_action :set_metadata, only: [:show, :tables, :table_schema]
-    after_action :close_metadata, only: [:show, :tables, :table_schema]
+    before_action :set_database, only: [:show, :execute_query, :export_csv, :export_json, :tables, :table_info]
+    before_action :set_metadata, only: [:show, :tables, :table_info]
 
     def index
       @databases = Work.all_databases
@@ -72,11 +71,14 @@ module SqliteDashboard
 
     def tables
       @tables = @metadata.tables
+      render json: tables
     end
 
-    def table_schema
+    def table_info
       table_name = params[:table_name]
       @schema = @metadata.get_table_schema(table_name)
+      @columns = @metadata.get_columns(table_name)
+      @indexes = @metadata.get_indexes(table_name)
     end
 
     def export_csv
@@ -189,10 +191,6 @@ module SqliteDashboard
     rescue => e
       Rails.logger.error "Failed to initialize SqliteMetadata: #{e.message}"
       redirect_to sqlite_dashboard_databases_path, alert: "Failed to access database: #{e.message}"
-    end
-
-    def close_metadata
-      @metadata&.close
     end
 
     def database_connection

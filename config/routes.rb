@@ -32,7 +32,7 @@ Rails.application.routes.draw do
         post :export_csv
         post :export_json
         get :tables
-        get :table_schema
+        get :table_info
       end
     end
   end

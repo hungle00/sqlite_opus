@@ -2,15 +2,15 @@
 
 // Container
 .sqlite-dashboard-container {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 // Sidebar
 .sidebar {
   background-color: var(--sidebar-bg);
   border-right: 2px solid #334155;
-  height: 100vh;
+  min-height: 100vh;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
 
@@ -38,7 +38,7 @@
 
 // Main Content
 .main-content {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: var(--main-bg);
@@ -81,6 +81,43 @@
   border-color: var(--primary-color);
   outline: 0;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+// Schema display (read-only CodeMirror)
+#schema-editor-container {
+  // Fallback styles for textarea (before CodeMirror initializes)
+  textarea {
+    width: 100%;
+    min-height: 150px;
+    max-height: 500px;
+    font-family: 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background-color: #f8fafc;
+    color: #1e293b;
+    resize: vertical;
+    overflow-y: auto;
+  }
+
+  // CodeMirror styles (after initialization)
+  .CodeMirror {
+    height: auto;
+    max-height: 500px;
+    font-size: 0.875rem;
+    border: 1px solid var(--border-color);
+    background-color: #f8fafc;
+    
+    .CodeMirror-scroll {
+      max-height: 500px;
+    }
+    
+    .CodeMirror-cursor {
+      display: none; // Hide cursor for read-only
+    }
+  }
 }
 
 .btn-primary {
@@ -332,29 +369,45 @@
   padding: 0;
   margin: 0;
 
-  li {
-    padding: 0.75rem 1rem;
-    cursor: pointer;
-    border-bottom: 1px solid #334155;
-    color: var(--sidebar-text);
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    i {
-      color: #94a3b8;
-      width: 16px;
+  .table-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    
+    &:hover {
+      text-decoration: none;
     }
 
-    &:hover {
+    &:focus {
+      text-decoration: none;
+      outline: none;
+    }
+
+    li {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-bottom: 1px solid #334155;
+      color: var(--sidebar-text);
+      transition: all 0.2s ease;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+
+      i {
+        color: #94a3b8;
+        width: 16px;
+      }
+    }
+
+    &:hover li {
       background-color: var(--sidebar-hover);
       padding-left: 1.25rem;
       color: #f1f5f9;
     }
 
-    &.active {
+    &.active li {
       background-color: var(--primary-color);
       color: white;
       border-left: 4px solid #60a5fa;
@@ -902,5 +955,24 @@
       font-size: 1rem;
     }
   }
+}
+
+// SQL Code Block
+pre code.sql {
+  font-family: 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #1e293b;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: auto;
+  display: block;
+}
+
+pre.bg-light {
+  background-color: #f8fafc !important;
+  border: 1px solid var(--border-color) !important;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
