@@ -1,4 +1,4 @@
-<div class="row g-0" style="height: 100vh;">
+<div class="row g-0" style="">
   <!-- Sidebar with tables -->
   <div class="col-md-2 sidebar">
     <div class="p-3">
@@ -8,13 +8,20 @@
       <%= link_to "← Back to Databases", databases_path, class: "btn btn-sm btn-outline-secondary mb-3" %>
 
       <h6 class="mb-2">Tables</h6>
-      <ul class="table-sidebar" data-controller="table-selector">
+      <ul class="table-sidebar" data-controller="table-selector" data-database-id="<%= @database[:id] %>">
         <% @tables.each do |table| %>
-          <li data-action="click->table-selector#selectTable"
-              data-table-name="<%= table %>"
-              data-table-selector-target="tableItem">
-            <i class="fas fa-table"></i> <%= table %>
-          </li>
+          <%= link_to table_info_database_path(@database[:id], table_name: table), 
+              class: "table-link", 
+              data: { 
+                turbo_frame: "table-info", 
+                table_selector_target: "tableItem", 
+                table_name: table,
+                action: "click->table-selector#selectTable"
+              } do %>
+            <li>
+              <i class="fas fa-table"></i> <%= table %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </div>
@@ -31,37 +38,37 @@
             <%= @database[:name] %>
           </h1>
         </div>
-      </div>  
-
+      </div>
       <div class="content-body mx-4">
-      
-        <table class="table table-sm table-striped table-bordered">
-          <tbody>
-            <tr>
-              <td class="fw-semibold">Base Name</td>
-              <td><%= @metadata.filename %></td>
-            </tr>
-            <tr>
-              <td class="fw-semibold">Size on Disk</td>
-              <td><%= @metadata.size_on_disk %></td>
-            </tr>
+        <%= turbo_frame_tag "table-info" do %>
+          <table class="table table-sm table-striped table-bordered">
+            <tbody>
+              <tr>
+                <td class="fw-semibold">Base Name</td>
+                <td><%= @metadata.filename %></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Size on Disk</td>
+                <td><%= @metadata.size_on_disk %></td>
+              </tr>
 
-            <tr>
-              <td class="fw-semibold">Tables</td>
-              <td><%= @metadata.tables.size %></td>
-            </tr>
+              <tr>
+                <td class="fw-semibold">Tables</td>
+                <td><%= @metadata.tables.size %></td>
+              </tr>
 
-            <tr>
-              <td class="fw-semibold">Indexes</td>
-              <td><%= @metadata.get_all_indexes.size %></td>
-            </tr>
+              <tr>
+                <td class="fw-semibold">Indexes</td>
+                <td><%= @metadata.get_all_indexes.size %></td>
+              </tr>
 
-            <tr>
-              <td class="fw-semibold">Views</td>
-              <td><%= @metadata.get_all_views.size %></td>
-            </tr>
-          </tbody>
-        </table>
+              <tr>
+                <td class="fw-semibold">Views</td>
+                <td><%= @metadata.get_all_views.size %></td>
+              </tr>
+            </tbody>
+          </table>
+        <% end %>
       </div>
     </div>
     <div class="query-console">

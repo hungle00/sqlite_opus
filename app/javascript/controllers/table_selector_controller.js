@@ -24,17 +24,6 @@ export default class extends Controller {
         queryInput.value = `SELECT * FROM ${tableName} LIMIT 100;`
       }
     }
-
-    // Trigger the query execution
-    const form = document.querySelector('[data-controller="query-executor"]')
-    if (form) {
-      const submitButton = form.querySelector('button[type="submit"]')
-      if (submitButton) {
-        submitButton.click()
-      } else {
-        form.requestSubmit()
-      }
-    }
   }
 }
 
