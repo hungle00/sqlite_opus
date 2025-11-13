@@ -6,7 +6,7 @@
         <div class="sidebar-brand">
           <i class="fas fa-database"></i>
           <div>
-            <h6 class="mb-0">SQLite Dashboard</h6>
+            <h6 class="mb-0">SQLite Opus</h6>
             <small class="text-muted">Database Manager</small>
           </div>
         </div>
@@ -63,7 +63,7 @@
           <p class="page-subtitle">Select a database to explore and manage</p>
         </div>
 
-        <%= render 'modal' %>
+        <%= render partial: 'sqlite_dashboard/databases/modals/upload_modal' %>
 
         <% if @databases.any? %>
           <div class="databases-grid">

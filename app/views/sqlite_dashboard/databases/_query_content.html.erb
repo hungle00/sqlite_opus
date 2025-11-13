@@ -1,0 +1,41 @@
+<div id="query-content" class="mt-3" data-controller="query-executor" data-database-name="<%= @database[:name] %>">
+  <div class="query-console">
+    <%= form_with url: execute_query_database_path(@database[:id]),
+                  method: :post,
+                  data: {
+                    action: "submit->query-executor#execute"
+                  } do |form| %>
+      <div class="mb-3">
+        <label for="query" class="form-label fw-bold">SQL Query</label>
+        <textarea name="query"
+                  id="query"
+                  class="form-control query-textarea"
+                  data-query-executor-target="queryInput"
+                  placeholder="Enter your SQL query here..."><%= params[:query] || "SELECT * FROM sqlite_master WHERE type='table';" %></textarea>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-play"></i> Execute Query
+        </button>
+        <button type="button" class="btn btn-outline-secondary" data-action="click->query-executor#clear">
+          <i class="fas fa-eraser"></i> Clear
+        </button>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveQueryModal">
+          <i class="fas fa-save"></i> Save Query
+        </button>
+        <%= link_to worksheet_path, class: "btn btn-outline-info" do %>
+          <i class="fas fa-file-code"></i> SQL Worksheet
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Results Container -->
+  <div class="results-container" id="query-results">
+    <div class="text-muted text-center py-5">
+      <i class="fas fa-database fa-3x mb-3"></i>
+      <p>Execute a query to see results</p>
+    </div>
+  </div>
+</div>
+

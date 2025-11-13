@@ -976,3 +976,41 @@ pre.bg-light {
   overflow-y: auto;
 }
 
+// Tabs Navigation
+.nav-tabs {
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 0;
+
+  .nav-link {
+    color: var(--text-secondary);
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+
+    &:hover {
+      color: var(--text-primary);
+      border-bottom-color: var(--primary-color);
+      background-color: transparent;
+    }
+
+    &.active {
+      color: var(--primary-color);
+      border-bottom-color: var(--primary-color);
+      background-color: transparent;
+      font-weight: 600;
+    }
+
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.tab-content {
+  .tab-pane {
+    padding-top: 1rem;
+  }
+}
+

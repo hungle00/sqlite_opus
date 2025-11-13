@@ -10,9 +10,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "page#welcome"
 
-  resources :works, only: [:new, :create] do
+  resources :works, only: [:new, :create, :destroy] do
     collection do
-      post :upload_ly
+      post :upload_db
     end
   end
 
