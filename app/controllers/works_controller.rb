@@ -13,14 +13,23 @@ class WorksController < ApplicationController
     end
   end
 
-  def upload_ly
-    lily_file = params[:file]
+  def upload_db
+    db_file = params[:file]
     
-    Lilypond::Uploader.new(lily_file).save
+    SqliteDashboard::Uploader.new(db_file).save
 
     render json: {
-      output_file: lily_file.original_filename
+      output_file: db_file.original_filename
     }
+  end
+
+  def destroy
+    @work = Work.find(params[:id])
+    if @work.destroy
+      redirect_to sqlite_dashboard_path, notice: 'Opus was successfully deleted.'
+    else
+      redirect_to sqlite_dashboard_path, notice: 'Opus was failed to delete.'
+    end
   end
 
   private

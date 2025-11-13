@@ -1,19 +1,27 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["tableItem"]
+  static values = { tableName: String }
 
-  selectTable(event) {
-    const tableName = event.currentTarget.dataset.tableName
+  onQueryTabShown(event) {
+    // Get table name from controller value (set in table_info.html.erb)
+    let tableName = this.tableNameValue
+    
+    // If still not found, try to find from active table link in sidebar
+    if (!tableName) {
+      const allTableLinks = document.querySelectorAll('.table-link[data-table-name]')
+      const activeTableLink = Array.from(allTableLinks).find(link => link.classList.contains("active"))
+      if (activeTableLink) {
+        tableName = activeTableLink.dataset.tableName
+      }
+    }
+    
+    if (tableName) {
+      this.updateQuery(tableName)
+    }
+  }
 
-    // Remove active class from all items
-    this.tableItemTargets.forEach(item => {
-      item.classList.remove("active")
-    })
-
-    // Add active class to clicked item
-    event.currentTarget.classList.add("active")
-
+  updateQuery(tableName) {
     // Update query in CodeMirror editor
     if (window.sqlEditor) {
       window.sqlEditor.setValue(`SELECT * FROM ${tableName} LIMIT 100;`)

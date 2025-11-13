@@ -1,104 +1,144 @@
-<%= turbo_frame_tag "table-info" do %>
-  <div id="database-info" class="content-body mx-4">
-    <!-- Table Schema with CodeMirror -->
-    <div class="mb-4">
-      <h6 class="fw-bold mb-3">Table Schema: <%= params[:table_name] %></h6>
-      <div id="schema-editor-container" data-controller="schema-display">
-        <textarea data-schema-display-target="textarea" readonly><%= @schema %></textarea>
+<%= turbo_frame_tag "database-page-content" do %>
+  <!-- Tabs Navigation -->
+  <div class="mx-4" data-controller="table-selector" data-table-selector-table-name-value="<%= params[:table_name] %>">
+    <ul class="nav nav-tabs" id="databaseTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-pane" type="button" role="tab" aria-controls="info-pane" aria-selected="true">
+          <i class="fas fa-info-circle"></i> Database Information
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" 
+                id="query-tab" 
+                data-bs-toggle="tab" 
+                data-bs-target="#query-pane" 
+                type="button" 
+                role="tab" 
+                aria-controls="query-pane" 
+                aria-selected="false"
+                data-action="shown.bs.tab->table-selector#onQueryTabShown">
+          <i class="fas fa-terminal"></i> Query Console
+        </button>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="databaseTabsContent">
+      <!-- Database Information Tab -->
+      <div class="tab-pane fade show active" id="info-pane" role="tabpanel" aria-labelledby="info-tab">
+        <div class="content-body mt-3" id="infor-content">
+          <div id="database-info" class="content-body mx-4">
+            <!-- Table Schema with CodeMirror -->
+            <div class="mb-4">
+              <h6 class="fw-bold mb-3">Table Schema: <%= params[:table_name] %></h6>
+              <div id="schema-editor-container" data-controller="schema-display">
+                <textarea data-schema-display-target="textarea" readonly><%= @schema %></textarea>
+              </div>
+            </div>
+
+            <!-- Columns Table -->
+            <div class="mb-4">
+              <h6 class="fw-bold mb-3">
+                <i class="fas fa-columns"></i> Columns (<%= @columns.size %>)
+              </h6>
+              <% if @columns.present? %>
+                <div class="table-responsive">
+                  <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Not Null</th>
+                        <th>Primary Key</th>
+                        <th>Default Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @columns.each do |column| %>
+                        <tr>
+                          <td><strong class="text-primary"><%= column[:name] %></strong></td>
+                          <td><code><%= column[:type] %></code></td>
+                          <td>
+                            <% if column[:notnull] %>
+                              <span class="badge bg-danger">Yes</span>
+                            <% else %>
+                              <span class="badge bg-secondary">No</span>
+                            <% end %>
+                          </td>
+                          <td>
+                            <% if column[:primary_key] %>
+                              <span class="badge bg-primary">Yes</span>
+                            <% else %>
+                              <span class="badge bg-secondary">No</span>
+                            <% end %>
+                          </td>
+                          <td>
+                            <% if column[:default_value] %>
+                              <code class="text-success"><%= column[:default_value] %></code>
+                            <% else %>
+                              <span class="text-muted">NULL</span>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              <% else %>
+                <p class="text-muted">No columns found</p>
+              <% end %>
+            </div>
+
+            <!-- Indexes Table -->
+            <div class="mb-4">
+              <h6 class="fw-bold mb-3">
+                <i class="fas fa-list"></i> Indexes (<%= @indexes.size %>)
+              </h6>
+              <% if @indexes.present? %>
+                <div class="table-responsive">
+                  <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>Name</th>
+                        <th>Unique</th>
+                        <th>SQL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @indexes.each do |index| %>
+                        <tr>
+                          <td><strong class="text-primary"><%= index.name %></strong></td>
+                          <td>
+                            <% if index.unique %>
+                              <span class="badge bg-warning">Yes</span>
+                            <% else %>
+                              <span class="badge bg-secondary">No</span>
+                            <% end %>
+                          </td>
+                          <td>
+                            <code class="text-muted small"><%= index.sql || 'N/A' %></code>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              <% else %>
+                <p class="text-muted">No indexes found</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Columns Table -->
-    <div class="mb-4">
-      <h6 class="fw-bold mb-3">
-        <i class="fas fa-columns"></i> Columns (<%= @columns.size %>)
-      </h6>
-      <% if @columns.present? %>
-        <div class="table-responsive">
-          <table class="table table-sm table-striped table-bordered table-hover">
-            <thead class="table-dark">
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Not Null</th>
-                <th>Primary Key</th>
-                <th>Default Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @columns.each do |column| %>
-                <tr>
-                  <td><strong class="text-primary"><%= column[:name] %></strong></td>
-                  <td><code><%= column[:type] %></code></td>
-                  <td>
-                    <% if column[:notnull] %>
-                      <span class="badge bg-danger">Yes</span>
-                    <% else %>
-                      <span class="badge bg-secondary">No</span>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% if column[:primary_key] %>
-                      <span class="badge bg-primary">Yes</span>
-                    <% else %>
-                      <span class="badge bg-secondary">No</span>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% if column[:default_value] %>
-                      <code class="text-success"><%= column[:default_value] %></code>
-                    <% else %>
-                      <span class="text-muted">NULL</span>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <p class="text-muted">No columns found</p>
-      <% end %>
-    </div>
-
-    <!-- Indexes Table -->
-    <div class="mb-4">
-      <h6 class="fw-bold mb-3">
-        <i class="fas fa-list"></i> Indexes (<%= @indexes.size %>)
-      </h6>
-      <% if @indexes.present? %>
-        <div class="table-responsive">
-          <table class="table table-sm table-striped table-bordered table-hover">
-            <thead class="table-dark">
-              <tr>
-                <th>Name</th>
-                <th>Unique</th>
-                <th>SQL</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @indexes.each do |index| %>
-                <tr>
-                  <td><strong class="text-primary"><%= index.name %></strong></td>
-                  <td>
-                    <% if index.unique %>
-                      <span class="badge bg-warning">Yes</span>
-                    <% else %>
-                      <span class="badge bg-secondary">No</span>
-                    <% end %>
-                  </td>
-                  <td>
-                    <code class="text-muted small"><%= index.sql || 'N/A' %></code>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <p class="text-muted">No indexes found</p>
-      <% end %>
+      <!-- Query Console Tab -->
+      <div class="tab-pane fade" 
+           id="query-pane" 
+           role="tabpanel" 
+           aria-labelledby="query-tab"
+           data-action="shown.bs.tab->table-selector#onQueryTabShown">
+        <%= render 'query_content' %>
+      </div>
     </div>
   </div>
 <% end %>
-

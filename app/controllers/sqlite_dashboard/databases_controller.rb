@@ -19,6 +19,7 @@ module SqliteDashboard
 
     def show
       @tables = @metadata.tables
+      @work = Work.find_by(id: @database[:id])
     end
 
     def worksheet

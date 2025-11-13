@@ -1,4 +1,6 @@
-class Lilypond::Uploader
+# frozen_string_literal: true
+# 
+class SqliteDashboard::Uploader
   attr_reader :uploaded_file
 
   def initialize(uploaded_file)
