@@ -11,13 +11,8 @@
     </div>
   <% end %>
 
-  <div class="mb-6">
-    <%= form.label :title, class: "form-label" %>
-    <%= form.text_field :title, class: "form-control" %>
-  </div>
-
-  <div class="my-6">
-    <%= form.label :db_file_name, class: "form-label" %>
+  <div class="my-4">
+    <%= form.label :db_file_name, class: "form-label", value: "Upload SQLite Database File" %>
     <div class="dropzone dropzone-default dz-clickable"
       data-controller="dropzone"
       data-dropzone-max-file-size="2"
@@ -31,10 +26,16 @@
     %>
     <div class="dropzone-msg dz-message needsclick text-gray-600">
       <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
-      <span class="dropzone-msg-desc text-sm">2 MB file size maximum. Allowed file types .ly.</span>
+      <span class="dropzone-msg-desc text-sm">2 MB file size maximum. Allowed file types .db, .sqlite, .sqlite3.</span>
       </div>
     </div>
   </div>
+
+  <div class="my-4">
+    <%= form.label :alias_name, class: "form-label", value: "Alias Name" %>
+    <%= form.text_field :alias_name, class: "form-control", placeholder: "Enter alias name" %>
+  </div>
+
   <div class="d-flex justify-content-end my-4">
     <%= form.submit class: "btn btn-primary" %>
   </div>

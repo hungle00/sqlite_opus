@@ -1,6 +1,6 @@
 class Work < ApplicationRecord
-  validates :title, presence: true
   validates :db_file_name, presence: true
+  validate :must_be_sqlite_database
 
   after_destroy :delete_db_file
 
@@ -8,12 +8,16 @@ class Work < ApplicationRecord
     Rails.root.join('storage', 'uploads', db_file_name)
   end
 
+  def db_name
+    alias_name.presence || db_file_name.split('.').first
+  end
+
   class << self
     def work_databases
       Work.all.map do |work|
         {
           id: work.id,
-          name: work.title, 
+          name: work.db_name, 
           path: work.db_file_path.to_s
         }
       end
@@ -28,5 +32,11 @@ class Work < ApplicationRecord
 
   def delete_db_file
     FileUtils.rm_f(db_file_path)
+  end
+
+  def must_be_sqlite_database
+    unless db_file_name.end_with?('.sqlite3') || db_file_name.end_with?('.db')
+      errors.add(:db_file_name, "must be a SQLite database file or a SQLite database file")
+    end
   end
 end

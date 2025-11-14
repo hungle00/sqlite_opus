@@ -877,6 +877,15 @@
 }
 
 // Alert Styling
+.alert {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1050;
+  min-width: 300px;
+  max-width: 500px;
+}
+
 .alert-warning {
   background-color: #fef3c7;
   border: 2px solid #fde047;

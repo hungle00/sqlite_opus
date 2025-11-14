@@ -9,7 +9,7 @@ class WorksController < ApplicationController
     if @work.save
       redirect_to database_path(@work.id), notice: 'Opus was successfully created.'
     else
-      redirect_to sqlite_dashboard_path, notice: 'Opus was failed to create.'
+      redirect_to sqlite_dashboard_path, notice: @work.errors.full_messages.join(', ')
     end
   end
 
@@ -35,6 +35,6 @@ class WorksController < ApplicationController
   private
 
   def work_params
-    params.require(:work).permit(:title, :db_file_name)
+    params.require(:work).permit(:alias_name, :db_file_name)
   end
 end
