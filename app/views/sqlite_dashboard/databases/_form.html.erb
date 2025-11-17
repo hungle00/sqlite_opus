@@ -15,7 +15,7 @@
     <%= form.label :db_file_name, class: "form-label", value: "Upload SQLite Database File" %>
     <div class="dropzone dropzone-default dz-clickable"
       data-controller="dropzone"
-      data-dropzone-max-file-size="2"
+      data-dropzone-max-file-size="4"
       data-dropzone-max-files="1">
     <%= form.file_field :db_file_name, class: "input",
       data: { 
@@ -26,7 +26,7 @@
     %>
     <div class="dropzone-msg dz-message needsclick text-gray-600">
       <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
-      <span class="dropzone-msg-desc text-sm">2 MB file size maximum. Allowed file types .db, .sqlite, .sqlite3.</span>
+      <span class="dropzone-msg-desc text-sm">4 MB file size maximum. Allowed file types .db, .sqlite, .sqlite3.</span>
       </div>
     </div>
   </div>
@@ -37,6 +37,6 @@
   </div>
 
   <div class="d-flex justify-content-end my-4">
-    <%= form.submit class: "btn btn-primary" %>
+    <%= form.submit class: "btn btn-primary", id: "work-submit-button" %>
   </div>
 <% end %>

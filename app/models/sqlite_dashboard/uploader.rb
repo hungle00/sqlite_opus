@@ -9,6 +9,11 @@ class SqliteDashboard::Uploader
 
   def save
   	output_file = Rails.root.join('storage', 'uploads', uploaded_file.original_filename)
+    
+    if File.exist?(output_file)
+      raise ArgumentError, "File with name '#{uploaded_file.original_filename}' already exists"
+    end
+    
     File.open(output_file, 'wb') do |file|
       file.write(uploaded_file.read)
     end

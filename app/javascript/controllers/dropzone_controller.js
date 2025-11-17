@@ -18,6 +18,8 @@ export default class extends Controller {
     this.hideFileInput();
     this.bindEvents();
     Dropzone.autoDiscover = false; // necessary quirk for Dropzone error in console
+    this.uploadSuccess = false;
+    this.disableSubmitButton();
   }
 
   // Private
@@ -35,11 +37,81 @@ export default class extends Controller {
 
     this.dropZone.on("removedfile", file => {
       file.controller && removeElement(file.controller.hiddenInput);
+      this.uploadSuccess = false;
+      this.disableSubmitButton();
     });
 
     this.dropZone.on("canceled", file => {
       file.controller && file.controller.xhr.abort();
     });
+
+    this.dropZone.on("processing", (file) => {
+      // Disable submit button while uploading
+      this.disableSubmitButton();
+    });
+
+    this.dropZone.on("success", (file, response) => {
+      this.uploadSuccess = true;
+      this.enableSubmitButton();
+      
+      // Update filename if server returns a different filename
+      if (response && response.output_file) {
+        file.name = response.output_file;
+        const nameElement = file.previewElement.querySelector('[data-dz-name]');
+        if (nameElement) {
+          nameElement.textContent = response.output_file;
+        }
+        const filenameSpan = file.previewElement.querySelector('.dz-filename span');
+        if (filenameSpan) {
+          filenameSpan.textContent = response.output_file;
+        }
+        if (file.controller && file.controller.hiddenInput) {
+          file.controller.hiddenInput.value = response.output_file;
+        }
+      }
+    });
+
+    this.dropZone.on("error", (file, errorMessage, xhr) => {
+      this.uploadSuccess = false;
+      this.disableSubmitButton();
+      
+      // Parse error message from server response
+      let errorText = errorMessage;
+      if (xhr && xhr.response) {
+        try {
+          const response = JSON.parse(xhr.response);
+          if (response.error) {
+            errorText = response.error;
+          }
+        } catch (e) {
+          // If response is not JSON, use the error message as is
+        }
+      }
+      
+      // Display error message in Dropzone
+      if (file.previewElement) {
+        const errorElement = file.previewElement.querySelector('.dz-error-message');
+        if (errorElement) {
+          errorElement.textContent = errorText;
+        }
+      }
+    });
+  }
+
+  disableSubmitButton() {
+    const submitButton = document.getElementById('work-submit-button');
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.classList.add('disabled');
+    }
+  }
+
+  enableSubmitButton() {
+    const submitButton = document.getElementById('work-submit-button');
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.classList.remove('disabled');
+    }
   }
 
   get headers() {

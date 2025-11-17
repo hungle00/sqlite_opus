@@ -16,11 +16,16 @@ class WorksController < ApplicationController
   def upload_db
     db_file = params[:file]
     
-    SqliteDashboard::Uploader.new(db_file).save
-
-    render json: {
-      output_file: db_file.original_filename
-    }
+    begin
+      SqliteDashboard::Uploader.new(db_file).save
+      render json: {
+        output_file: db_file.original_filename
+      }
+    rescue ArgumentError => e
+      render json: {
+        error: e.message
+      }, status: :unprocessable_entity
+    end
   end
 
   def destroy
