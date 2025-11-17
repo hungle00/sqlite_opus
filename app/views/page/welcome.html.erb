@@ -1,28 +1,54 @@
 <!-- Hero Section -->
-<section class="hero-section py-5 py-md-5 py-lg-5">
+<section class="hero-section py-4">
   <div class="container">
-    <div class="row justify-content-center align-items-center min-vh-50">
+    <div class="row justify-content-center">
       <div class="col-lg-8 text-center">
-        <h1 class="display-2 fw-bold text-primary mb-4">
+        <div class="mb-3">
+          <i class="fas fa-database" style="font-size: 3rem; color: var(--bs-primary);"></i>
+        </div>
+        <h1 class="display-4 fw-bold text-primary mb-3">
           SQLite Opus
         </h1>
-        <p class="lead text-body-secondary mb-4">
+        <p class="lead text-body-secondary mb-3">
           <span class="fw-semibold">Opus</span> is a Latin term that means Works.
-          <span class="fw-semibold">Rails Opus</span> stands for a collection of works with Rails.
+          <span class="fw-semibold">SQLite Opus</span> stands for a collection of works with Rails.
         </p>
-        <p class="text-body-secondary mb-5">
+        <p class="text-body-secondary mb-4">
           Manage and explore your SQLite databases with an intuitive dashboard interface.
         </p>
-        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-          <%= link_to "Open SQLite Dashboard", "/sqlite_dashboard", class: "btn btn-primary btn-lg px-5 py-3 fw-semibold" %>
-        </div>
+        
+        <!-- Action Section -->
+        <% if false %>
+          <div class="mb-4 mt-5">
+            <%= link_to sqlite_dashboard_path, class: "btn btn-primary btn-lg px-5 py-3 fw-semibold" do %>
+              <i class="fas fa-arrow-right me-2"></i>
+              Go to Dashboard
+            <% end %>
+          </div>
+        <% else %>
+          <div class="mb-4 p-4" style="border: 1px dashed rgba(0, 0, 0, 0.2); border-radius: 8px;">
+            <p class="text-body-secondary mb-3">
+              Create your first database or use a sample database to explore the features.
+            </p>
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+              <%= link_to sqlite_dashboard_path, class: "btn btn-primary btn-lg px-4 py-2 fw-semibold" do %>
+                <i class="fas fa-plus-circle me-2"></i>
+                Create Your First Database
+              <% end %>
+              <%= button_to create_first_database_path, method: :post, class: "btn btn-outline-primary btn-lg px-4 py-2 fw-semibold", form: { class: "d-inline" } do %>
+                <i class="fas fa-database me-2"></i>
+                Use Sample Database
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Features Section -->
-<section class="features-section py-5">
+<section class="features-section pt-4 pb-5 bg-light">
   <div class="container">
     <div class="row g-4">
       <div class="col-md-4">

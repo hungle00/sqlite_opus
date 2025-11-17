@@ -46,6 +46,17 @@ footer a:hover {
   align-items: center;
 }
 
+// Welcome page
+body.page-welcome {
+  height: 100vh;
+  overflow: hidden;
+  
+  main {
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+}
+
 // Buttons
 .btn-primary {
   background-color: var(--primary-color);

@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "page#welcome"
+  
+  # Create sample database
+  post "create_first_database", to: "page#create_first_database", as: :create_first_database
 
   resources :works, only: [:new, :create, :destroy] do
     collection do

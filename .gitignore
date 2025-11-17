@@ -31,6 +31,8 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
+!/storage/uploads/chinook.db
+
 /public/assets
 
 # Ignore master key for decrypting credentials and more.

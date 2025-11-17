@@ -26,6 +26,12 @@ class Work < ApplicationRecord
     def all_databases
       Work.count == 0 ? SqliteDashboard.configuration.databases : work_databases
     end
+
+    def create_first_database
+      if Work.count == 0
+        Work.create(db_file_name: 'chinook.db', alias_name: 'Chinook')
+      end
+    end
   end
 
   private
