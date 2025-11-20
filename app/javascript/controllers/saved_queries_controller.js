@@ -31,7 +31,7 @@ export default class extends Controller {
 
   async loadSavedQueries() {
     try {
-      const response = await fetch('/sqlite_dashboard/saved_queries')
+      const response = await fetch('/sqlite_opus/saved_queries')
       const queries = await response.json()
       this.renderSavedQueries(queries)
     } catch (error) {
@@ -93,7 +93,7 @@ export default class extends Controller {
     }
 
     try {
-      const response = await fetch(`/sqlite_dashboard/databases/${databaseId}/execute_query`, {
+      const response = await fetch(`/sqlite_opus/databases/${databaseId}/execute_query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ export default class extends Controller {
     }
 
     try {
-      const response = await fetch('/sqlite_dashboard/saved_queries', {
+      const response = await fetch('/sqlite_opus/saved_queries', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -256,7 +256,7 @@ export default class extends Controller {
     }
 
     try {
-      const response = await fetch(`/sqlite_dashboard/saved_queries/${queryId}`, {
+      const response = await fetch(`/sqlite_opus/saved_queries/${queryId}`, {
         method: 'DELETE',
         headers: { 'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content }
       })
@@ -292,7 +292,7 @@ export default class extends Controller {
 
     const form = document.createElement('form')
     form.method = 'POST'
-    form.action = `/sqlite_dashboard/databases/${databaseId}/export_csv`
+    form.action = `/sqlite_opus/databases/${databaseId}/export_csv`
     const csrfToken = document.querySelector('[name="csrf-token"]').content
     form.innerHTML = `
       <input type="hidden" name="authenticity_token" value="${csrfToken}">
@@ -319,7 +319,7 @@ export default class extends Controller {
 
     const form = document.createElement('form')
     form.method = 'POST'
-    form.action = `/sqlite_dashboard/databases/${databaseId}/export_json`
+    form.action = `/sqlite_opus/databases/${databaseId}/export_json`
     const csrfToken = document.querySelector('[name="csrf-token"]').content
     form.innerHTML = `
       <input type="hidden" name="authenticity_token" value="${csrfToken}">

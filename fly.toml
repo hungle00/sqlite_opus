@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for lilyopus on 2025-03-26T15:03:01+07:00
+# fly.toml app configuration file generated for sqlite-opus on 2025-11-04T11:13:20+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'lilyopus'
+app = 'sqlite-opus'
 primary_region = 'sin'
 console_command = '/rails/bin/rails console'
 

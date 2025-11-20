@@ -35,7 +35,7 @@ The application allows you to:
 1. **Clone repository**
 ```bash
 git clone <repository-url>
-cd lilyopus
+cd sqlite-opus
 ```
 
 2. **Install dependencies**

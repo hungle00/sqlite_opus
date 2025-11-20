@@ -9,7 +9,7 @@ class WorksController < ApplicationController
     if @work.save
       redirect_to database_path(@work.id), notice: 'Opus was successfully created.'
     else
-      redirect_to sqlite_dashboard_path, notice: @work.errors.full_messages.join(', ')
+      redirect_to dashboard_path, notice: @work.errors.full_messages.join(', ')
     end
   end
 
@@ -31,9 +31,9 @@ class WorksController < ApplicationController
   def destroy
     @work = Work.find(params[:id])
     if @work.destroy
-      redirect_to sqlite_dashboard_path, notice: 'Opus was successfully deleted.'
+      redirect_to dashboard_path, notice: 'Opus was successfully deleted.'
     else
-      redirect_to sqlite_dashboard_path, notice: 'Opus was failed to delete.'
+      redirect_to dashboard_path, notice: 'Opus was failed to delete.'
     end
   end
 
