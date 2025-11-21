@@ -30,6 +30,8 @@
 /tmp/storage/*
 !/tmp/storage/.keep
 
+!/storage/uploads/chinook.db
+
 # Ignore assets.
 /node_modules/
 /app/assets/builds/*

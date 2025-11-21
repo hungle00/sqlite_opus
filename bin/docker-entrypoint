@@ -1,5 +1,30 @@
 #!/bin/bash -e
 
+# If running as root, setup files and switch to rails user
+if [ "$(id -u)" = "0" ]; then
+  # Create necessary directories with proper permissions
+  mkdir -p storage/uploads tmp/pids log
+  
+  # Fix permissions for storage directory (important for volume mounts)
+  # This ensures rails user can write database files and uploaded files
+  chown -R rails:rails storage 2>/dev/null || true
+  chmod -R u+w storage 2>/dev/null || true
+  
+  # Fix permissions for other directories
+  chown -R rails:rails tmp/pids log 2>/dev/null || true
+  
+  # Copy seed database file if it doesn't exist (for volume mounting scenarios)
+  if [ ! -f "storage/uploads/chinook.db" ] && [ -f "/rails/seed/chinook.db" ]; then
+    cp /rails/seed/chinook.db storage/uploads/chinook.db
+    chown rails:rails storage/uploads/chinook.db 2>/dev/null || true
+    echo "Copied seed database chinook.db to storage/uploads/"
+  fi
+  
+  # Switch to rails user and re-execute this script
+  exec gosu rails:rails "$0" "$@"
+fi
+
+# From here, running as rails user
 # Generate SECRET_KEY_BASE if not set
 if [ -z "$SECRET_KEY_BASE" ]; then
   export SECRET_KEY_BASE=$(./bin/rails secret)
