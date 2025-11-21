@@ -8,7 +8,7 @@ class SqliteDashboard::Uploader
   end
 
   def save
-  	output_file = Rails.root.join('storage', 'uploads', uploaded_file.original_filename)
+  	output_file = SqliteDashboard.configuration.upload_file_path(uploaded_file.original_filename)
     
     if File.exist?(output_file)
       raise ArgumentError, "File with name '#{uploaded_file.original_filename}' already exists"

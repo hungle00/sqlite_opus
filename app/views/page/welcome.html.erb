@@ -20,7 +20,7 @@
         <!-- Action Section -->
         <% if @has_works %>
           <div class="mb-4 mt-5">
-            <%= link_to sqlite_dashboard_path, class: "btn btn-primary btn-lg px-5 py-3 fw-semibold" do %>
+            <%= link_to dashboard_path, class: "btn btn-primary btn-lg px-5 py-3 fw-semibold" do %>
               <i class="fas fa-arrow-right me-2"></i>
               Go to Dashboard
             <% end %>
@@ -31,7 +31,7 @@
               Create your first database or use a sample database to explore the features.
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-              <%= link_to sqlite_dashboard_path, class: "btn btn-primary btn-lg px-4 py-2 fw-semibold" do %>
+              <%= link_to dashboard_path, class: "btn btn-primary btn-lg px-4 py-2 fw-semibold" do %>
                 <i class="fas fa-plus-circle me-2"></i>
                 Create Your First Database
               <% end %>

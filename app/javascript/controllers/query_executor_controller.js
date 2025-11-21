@@ -421,7 +421,7 @@ export default class extends Controller {
     }
 
     try {
-      const response = await fetch('/sqlite_dashboard/saved_queries', {
+      const response = await fetch('/sqlite_opus/saved_queries', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

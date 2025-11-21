@@ -8,7 +8,7 @@ FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 WORKDIR /rails
 
 # Set production environment
-ENV RAILS_ENV="production" \
+ENV RAILS_ENV="development" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
@@ -42,21 +42,28 @@ FROM base
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
+    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips gosu && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
+# Copy seed database file to a separate location for volume mounting scenarios
+RUN mkdir -p /rails/seed && \
+    if [ -f /rails/storage/uploads/chinook.db ]; then \
+      cp /rails/storage/uploads/chinook.db /rails/seed/chinook.db; \
+    fi
+
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
-USER rails:rails
+    mkdir -p storage/uploads tmp/pids log && \
+    chown -R rails:rails db log storage tmp /rails/seed && \
+    chmod +x /rails/bin/docker-entrypoint
 
-# Entrypoint prepares the database.
+# Entrypoint will run as root initially to setup files, then switch to rails user
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-CMD ["./bin/rails", "server"]
+EXPOSE 3005
+CMD ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3005"]

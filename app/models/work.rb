@@ -5,7 +5,7 @@ class Work < ApplicationRecord
   after_destroy :delete_db_file
 
   def db_file_path
-    Rails.root.join('storage', 'uploads', db_file_name)
+    SqliteDashboard.configuration.upload_file_path(db_file_name)
   end
 
   def db_name

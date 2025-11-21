@@ -24,18 +24,52 @@ The application allows you to:
 
 ## 📦 Installation
 
-### System Requirements
-- Ruby 3.3.5
-- Bundler
-- SQLite3 development libraries
-- Node.js (for asset compilation)
+### Docker setup
 
-### Installation Steps
+#### Option 1: Use pre-built image from Docker Hub (Recommended)
+
+Pull and run the pre-built image:
+```bash
+docker pull jamesjoyce/sqlite-opus:latest
+```
+
+Run with volume mount to keep database files and uploaded files persistent:
+```bash
+docker run -d \
+  --name sqlite-opus \
+  -p 3005:3005 \
+  -v $(pwd)/storage:/rails/storage \
+  jamesjoyce/sqlite-opus:latest
+```
+
+The application will be available at `http://localhost:3005`
+
+#### Option 2: Build from source
+
+Clone repository
+```bash
+git clone <repository-url>
+cd sqlite-opus
+```
+
+Build and run with Docker:
+```bash
+docker build -t sqlite-opus .
+```
+
+Run with volume mount to keep database files and uploaded files persistent:
+```bash
+docker run -p 3005:3005 \
+  -v $(pwd)/storage:/rails/storage \
+  sqlite-opus:latest
+```
+
+### Manual setup
 
 1. **Clone repository**
 ```bash
 git clone <repository-url>
-cd lilyopus
+cd sqlite-opus
 ```
 
 2. **Install dependencies**
@@ -47,31 +81,18 @@ bundle install
 ```bash
 bin/rails db:create
 bin/rails db:migrate
-bin/rails db:seed
 ```
 
 4. **Run the application**
 
-Development mode:
 ```bash
 bin/dev
-```
-
-Or run separately:
-```bash
+# or
 bin/rails server
 ```
 
 The application will run at `http://localhost:3000`
 
-
-### Docker
-
-Build and run with Docker:
-```bash
-docker build -t sqlite-opus .
-docker run -p 3000:3000 sqlite-opus
-```
 
 ## 🤝 Contributing
 
