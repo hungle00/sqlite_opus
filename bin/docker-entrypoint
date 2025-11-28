@@ -1,33 +1,23 @@
 #!/bin/bash -e
 
-# If running as root, setup files and switch to rails user
-if [ "$(id -u)" = "0" ]; then
-  # Create necessary directories with proper permissions
-  mkdir -p storage/uploads tmp/pids log
-  
-  # Fix permissions for storage directory (important for volume mounts)
-  # This ensures rails user can write database files and uploaded files
-  chown -R rails:rails storage 2>/dev/null || true
-  chmod -R u+w storage 2>/dev/null || true
-  
-  # Fix permissions for other directories
-  chown -R rails:rails tmp/pids log 2>/dev/null || true
-  
-  # Copy seed database file if it doesn't exist (for volume mounting scenarios)
-  if [ ! -f "storage/uploads/chinook.db" ] && [ -f "/rails/seed/chinook.db" ]; then
-    cp /rails/seed/chinook.db storage/uploads/chinook.db
-    chown rails:rails storage/uploads/chinook.db 2>/dev/null || true
-    echo "Copied seed database chinook.db to storage/uploads/"
+# Create /data/uploads directory if it doesn't exist (for volume mount)
+mkdir -p /data/uploads
+
+# Create symlink from /rails/storage/uploads to /data/uploads (volume mount)
+# This allows using single volume for both database and uploads
+if [ ! -L storage/uploads ]; then
+  # Remove existing directory if it exists and create symlink
+  if [ -d storage/uploads ]; then
+    rm -rf storage/uploads
   fi
-  
-  # Switch to rails user and re-execute this script
-  exec gosu rails:rails "$0" "$@"
+  ln -s /data/uploads storage/uploads
+  echo "Created symlink: storage/uploads -> /data/uploads"
 fi
 
-# From here, running as rails user
-# Generate SECRET_KEY_BASE if not set
-if [ -z "$SECRET_KEY_BASE" ]; then
-  export SECRET_KEY_BASE=$(./bin/rails secret)
+# Copy seed database file if it doesn't exist (for volume mounting scenarios)
+if [ ! -f "/data/uploads/chinook.db" ] && [ -f "/rails/storage/uploads/chinook.db" ]; then
+  cp /rails/storage/uploads/chinook.db /data/uploads/chinook.db
+  echo "Copied seed database chinook.db to /data/uploads/"
 fi
 
 # If running the rails server then create or migrate existing database
